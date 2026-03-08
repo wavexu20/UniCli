@@ -647,6 +647,7 @@ Inspect Material instance
 | `mainTextureOffset` | `Vector2` |
 | `mainTextureScale` | `Vector2` |
 | `renderQueue` | `int` |
+| `rawRenderQueue` | `int` |
 | `globalIlluminationFlags` | `string` |
 | `doubleSidedGI` | `bool` |
 | `enableInstancing` | `bool` |
@@ -877,6 +878,89 @@ Compile player scripts for a specific build target
 ---
 
 
+## BuildProfile
+
+
+### BuildProfile.GetActive
+
+Get the active build profile
+
+**Parameters:** None
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `hasActiveProfile` | `bool` |
+| `name` | `string` |
+| `path` | `string` |
+| `scriptingDefines` | `string[]` |
+| `scenes` | `string[]` |
+| `overrideGlobalScenes` | `bool` |
+
+---
+
+
+### BuildProfile.Inspect
+
+Inspect a build profile's details
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `path` | `string` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `name` | `string` |
+| `path` | `string` |
+| `isActive` | `bool` |
+| `scriptingDefines` | `string[]` |
+| `scenes` | `BuildProfileSceneEntry[]` |
+| `overrideGlobalScenes` | `bool` |
+| `scenesForBuild` | `BuildProfileSceneEntry[]` |
+
+---
+
+
+### BuildProfile.List
+
+List all build profiles
+
+**Parameters:** None
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `profiles` | `BuildProfileEntry[]` |
+
+---
+
+
+### BuildProfile.SetActive
+
+Set the active build profile
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `path` | `string` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `name` | `string` |
+| `path` | `string` |
+
+---
+
+
 ## BuildTarget
 
 
@@ -999,7 +1083,6 @@ Inspect all EditorSettings values
 | `prefabModeAllowAutoSave` | `bool` |
 | `spritePackerMode` | `string` |
 | `spritePackerPaddingPower` | `int` |
-| `etcTextureCompressorBehavior` | `int` |
 | `etcTextureFastCompressor` | `int` |
 | `etcTextureNormalCompressor` | `int` |
 | `etcTextureBestCompressor` | `int` |
@@ -1009,8 +1092,7 @@ Inspect all EditorSettings values
 | `cachingShaderPreprocessor` | `bool` |
 | `projectGenerationRootNamespace` | `string` |
 | `useLegacyProbeSampleCount` | `bool` |
-| `enableCookiesInLightmapper` | `bool` |
-| `enableEnlightenBakedGI` | `bool` |
+| `shadowmaskStitching` | `bool` |
 | `enterPlayModeOptionsEnabled` | `bool` |
 | `enterPlayModeOptions` | `string` |
 | `serializeInlineMappingsOnOneLine` | `bool` |
@@ -1028,6 +1110,8 @@ Inspect all EditorSettings values
 | `gameObjectNamingDigits` | `int` |
 | `gameObjectNamingScheme` | `string` |
 | `assetNamingUsesSpace` | `bool` |
+| `referencedClipsExactNaming` | `bool` |
+| `forceAssetUnloadAndGCOnSceneLoad` | `bool` |
 
 ---
 
@@ -1046,14 +1130,6 @@ Inspect all EditorUserBuildSettings values
 | Field | Type |
 |---|---|
 | `selectedBuildTargetGroup` | `string` |
-| `selectedQnxOsVersion` | `string` |
-| `selectedQnxArchitecture` | `string` |
-| `selectedEmbeddedLinuxArchitecture` | `string` |
-| `remoteDeviceInfo` | `bool` |
-| `remoteDeviceAddress` | `string` |
-| `remoteDeviceUsername` | `string` |
-| `remoteDeviceExports` | `string` |
-| `pathOnRemoteDevice` | `string` |
 | `selectedStandaloneTarget` | `string` |
 | `standaloneBuildSubtarget` | `string` |
 | `ps4BuildSubtarget` | `string` |
@@ -1066,18 +1142,12 @@ Inspect all EditorUserBuildSettings values
 | `movePackageToDiscOuterEdge` | `bool` |
 | `compressFilesInPackage` | `bool` |
 | `buildScriptsOnly` | `bool` |
-| `xboxBuildSubtarget` | `string` |
-| `streamingInstallLaunchRange` | `int` |
-| `xboxOneDeployMethod` | `string` |
-| `xboxOneDeployDrive` | `string` |
-| `xboxOneAdditionalDebugPorts` | `string` |
-| `xboxOneRebootIfDeployFailsAndRetry` | `bool` |
 | `androidBuildSubtarget` | `string` |
 | `webGLBuildSubtarget` | `string` |
-| `androidETC2Fallback` | `string` |
+| `webGLClientBrowserPath` | `string` |
+| `webGLClientBrowserType` | `string` |
 | `androidBuildSystem` | `string` |
 | `androidBuildType` | `string` |
-| `androidCreateSymbols` | `string` |
 | `wsaUWPBuildType` | `string` |
 | `wsaUWPSDK` | `string` |
 | `wsaMinUWPSDK` | `string` |
@@ -1087,6 +1157,7 @@ Inspect all EditorUserBuildSettings values
 | `windowsDevicePortalUsername` | `string` |
 | `windowsDevicePortalPassword` | `string` |
 | `wsaBuildAndRunDeployTarget` | `string` |
+| `windowsBuildAndRunDeployTarget` | `string` |
 | `overrideMaxTextureSize` | `int` |
 | `overrideTextureCompression` | `string` |
 | `activeBuildTarget` | `string` |
@@ -1115,13 +1186,18 @@ Inspect all EditorUserBuildSettings values
 | `switchEnableMemoryTracker` | `bool` |
 | `switchWaitForMemoryTrackerOnStartup` | `bool` |
 | `switchEnableDebugPad` | `bool` |
-| `switchRedirectWritesToHostMount` | `bool` |
+| `switchEnableHostIO` | `bool` |
 | `switchHTCSScriptDebugging` | `bool` |
 | `switchUseLegacyNvnPoolAllocator` | `bool` |
 | `switchEnableUnpublishableErrors` | `bool` |
 | `installInBuildFolder` | `bool` |
 | `waitForManagedDebugger` | `bool` |
 | `managedDebuggerFixedPort` | `int` |
+| `remoteDeviceInfo` | `bool` |
+| `remoteDeviceAddress` | `string` |
+| `remoteDeviceUsername` | `string` |
+| `remoteDeviceExports` | `string` |
+| `pathOnRemoteDevice` | `string` |
 
 ---
 
@@ -1889,7 +1965,6 @@ Inspect all PlayerSettings values
 | `defaultIsNativeResolution` | `bool` |
 | `macRetinaSupport` | `bool` |
 | `runInBackground` | `bool` |
-| `captureSingleScreen` | `bool` |
 | `usePlayerLog` | `bool` |
 | `resizableWindow` | `bool` |
 | `resetResolutionOnWindowResize` | `bool` |
@@ -1915,16 +1990,14 @@ Inspect all PlayerSettings values
 | `suppressCommonWarnings` | `bool` |
 | `allowUnsafeCode` | `bool` |
 | `gcIncremental` | `bool` |
-| `keystorePass` | `string` |
-| `keyaliasPass` | `string` |
 | `gpuSkinning` | `bool` |
+| `meshDeformation` | `string` |
 | `graphicsJobs` | `bool` |
 | `graphicsJobMode` | `string` |
 | `xboxPIXTextureCapture` | `bool` |
 | `xboxEnableAvatar` | `bool` |
 | `xboxOneResolution` | `int` |
 | `enableInternalProfiler` | `bool` |
-| `actionOnDotNetUnhandledException` | `string` |
 | `logObjCUncaughtExceptions` | `bool` |
 | `enableCrashReportAPI` | `bool` |
 | `applicationIdentifier` | `string` |
@@ -1945,7 +2018,6 @@ Inspect all PlayerSettings values
 | `strictShaderVariantMatching` | `bool` |
 | `mipStripping` | `bool` |
 | `advancedLicense` | `bool` |
-| `aotOptions` | `string` |
 | `cursorHotspot` | `Vector2` |
 | `accelerometerFrequency` | `int` |
 | `mTRendering` | `bool` |
@@ -1972,7 +2044,6 @@ Inspect all PlayerSettings values
 | `visionOS` | `VisionOSSettings` |
 | `webGL` | `WebGLSettings` |
 | `wSA` | `WSASettings` |
-| `xboxOne` | `XboxOneSettings` |
 
 ---
 
@@ -2567,6 +2638,57 @@ Capture a screenshot of the Game View and save as PNG (requires Play Mode)
 ---
 
 
+### Screenshot.CaptureCamera
+
+Capture screenshot from a scene camera render
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `cameraName` | `string` |
+| `width` | `int` (default: `1920`) |
+| `height` | `int` (default: `1080`) |
+| `filename` | `string` |
+| `transparent` | `bool` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `imagePath` | `string` |
+| `cameraName` | `string` |
+| `width` | `int` |
+| `height` | `int` |
+
+---
+
+
+### Screenshot.CaptureEditor
+
+Capture screenshot for an Editor panel (optionally cropped by selector)
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `panel` | `string` |
+| `selector` | `string` |
+| `filename` | `string` |
+| `diffBase` | `string` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `imagePath` | `string` |
+| `width` | `int` |
+| `height` | `int` |
+| `diff` | `ScreenshotDiffInfo` |
+
+---
+
+
 ## Search
 
 
@@ -2816,6 +2938,130 @@ List types derived from a base type or matching a pattern
 |---|---|
 | `types` | `string[]` |
 | `count` | `int` |
+
+---
+
+
+## UITree
+
+
+### UITree.Click
+
+Click-like interaction on a UI Toolkit element
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `panel` | `string` |
+| `selector` | `string` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `target` | `UITreeTargetInfo` |
+| `result` | `string` |
+| `sideEffects` | `UITreeSideEffectEntry[]` |
+
+---
+
+
+### UITree.Dump
+
+Dump UI Toolkit hierarchy for an Editor panel
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `panel` | `string` |
+| `depth` | `int` (default: `10`) |
+| `filter` | `string` |
+| `includeUnityClasses` | `bool` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `panelInfo` | `UITreePanelInfo` |
+| `lines` | `string[]` |
+| `matchedCount` | `int` |
+
+---
+
+
+### UITree.Fill
+
+Set value/text on an editable UI Toolkit field
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `panel` | `string` |
+| `selector` | `string` |
+| `value` | `string` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `target` | `UITreeTargetInfo` |
+| `oldValue` | `string` |
+| `newValue` | `string` |
+| `sideEffects` | `UITreeSideEffectEntry[]` |
+
+---
+
+
+### UITree.Inspect
+
+Inspect one UI Toolkit element in detail
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `panel` | `string` |
+| `selector` | `string` |
+| `includeResolvedStyle` | `bool` (default: `true`) |
+| `includeBindingInfo` | `bool` (default: `true`) |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `element` | `UITreeElementInfo` |
+| `layout` | `UITreeLayoutInfo` |
+| `content` | `UITreeContentInfo` |
+| `resolvedStyle` | `UITreeStyleEntry[]` |
+| `binding` | `UITreeBindingInfo` |
+
+---
+
+
+### UITree.Select
+
+Select an option in a UI Toolkit selection control
+
+**Parameters:**
+
+| Field | Type |
+|---|---|
+| `panel` | `string` |
+| `selector` | `string` |
+| `choice` | `string` |
+
+**Response:**
+
+| Field | Type |
+|---|---|
+| `target` | `UITreeTargetInfo` |
+| `oldValue` | `string` |
+| `newValue` | `string` |
+| `choices` | `string[]` |
+| `sideEffects` | `UITreeSideEffectEntry[]` |
 
 ---
 

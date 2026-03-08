@@ -28,6 +28,8 @@ Designed to work with AI coding agents such as [Claude Code](https://docs.anthro
   - [Common options](#common-options)
   - [Examples](#examples)
 - [Dynamic Code Execution (Eval)](#dynamic-code-execution-eval)
+- [Project-specific Extensions](#project-specific-extensions)
+  - [UITree Extension](#uitree-extension)
 - [Custom Commands](#custom-commands)
   - [Text formatting](#text-formatting)
   - [Async handlers and cancellation](#async-handlers-and-cancellation)
@@ -84,6 +86,18 @@ Or add it manually via Unity Package Manager using the git URL:
 
 ```
 https://github.com/yucchiy/UniCli.git?path=src/UniCli.Unity/Packages/com.yucchiy.unicli-server
+```
+
+To install the UITree extension from this fork/tag instead of the upstream package, use:
+
+```bash
+unicli install --update --source "https://github.com/wavexu20/UniCli.git?path=src/UniCli.Unity/Packages/com.yucchiy.unicli-server#uitree-extension-v1"
+```
+
+Or add this git URL directly in Unity Package Manager:
+
+```
+https://github.com/wavexu20/UniCli.git?path=src/UniCli.Unity/Packages/com.yucchiy.unicli-server#uitree-extension-v1
 ```
 
 ### Quick Usage
@@ -301,6 +315,61 @@ Use it for cooperative cancellation of long-running operations:
 # Wait asynchronously with cancellation support
 unicli eval 'await Task.Delay(5000, cancellationToken); return "done";' --json
 ```
+
+## Project-specific Extensions
+
+Project-specific commands are not documented in the built-in command table below because they are loaded from the Unity project at runtime.
+
+For AI agents and automation, the source of truth is:
+
+```bash
+unicli commands --json
+unicli exec <command> --help
+```
+
+As long as the package is installed in the Unity project and Unity has compiled successfully, custom commands are discoverable through those two entry points even if the README is stale.
+
+### UITree Extension
+
+This fork/tag adds a compact UI Toolkit automation extension aimed at editor UI workflows:
+
+- `UITree.Dump`
+- `UITree.Inspect`
+- `UITree.Click`
+- `UITree.Fill`
+- `UITree.Select`
+- `Screenshot.CaptureEditor`
+- `Screenshot.CaptureCamera`
+
+Typical flow:
+
+```bash
+# List open candidate panels or dump a specific editor window
+unicli exec UITree.Dump --panel "UniCli UITree Test" --depth 10 --json
+
+# Inspect one element by USS selector
+unicli exec UITree.Inspect --panel "UniCli UITree Test" --selector "#name-field" --json
+
+# Interact with UI Toolkit controls
+unicli exec UITree.Click --panel "UniCli UITree Test" --selector "#run-button" --json
+unicli exec UITree.Fill --panel "UniCli UITree Test" --selector "#name-field" --value "Updated by README" --json
+unicli exec UITree.Select --panel "UniCli UITree Test" --selector "#mode-dropdown" --choice "Gamma" --json
+
+# Capture editor and camera screenshots for visual verification
+unicli exec Screenshot.CaptureEditor --panel "UniCli UITree Test" --filename "artifacts/editor.png" --json
+unicli exec Screenshot.CaptureCamera --cameraName "Main Camera" --width 1920 --height 1080 --json
+```
+
+Common usage patterns:
+
+- Use `UITree.Dump` to find stable panel names and selectors
+- Use `UITree.Inspect` before an interaction when a selector may be ambiguous
+- Use `UITree.Click`, `UITree.Fill`, and `UITree.Select` to trigger UI behavior while returning side-effect diffs
+- Use `Screenshot.CaptureEditor` with `--selector` to crop to a target element
+- Use `Screenshot.CaptureEditor --diffBase ...` to produce a visual diff
+- Use `Screenshot.CaptureCamera` to validate pure render output without editor chrome
+
+For complete parameter and response details, regenerate or inspect [`doc/commands.md`](doc/commands.md), or run `unicli exec <command> --help`.
 
 
 ## Custom Commands
